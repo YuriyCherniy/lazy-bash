@@ -1,0 +1,14 @@
+title: "Замерить скорость DNS-резолвинга, TTFB и общее время ответа сервера сайта (demo с аргументами)"
+description: "Проверка осуществляется с помощью curl. URL вводить в формате https://domain.ru"
+args: "https://DOMAIN"
+version: 1.0.0
+author: "Yuriy Cherniy"
+tags: ""
+content: |
+  #!/bin/bash
+  set -euo pipefail
+  source common.sh
+
+  DOMAIN="${1:?Usage: bash -s https://DOMAIN}"
+
+  run curl -o /dev/null -sw "DNS: %{time_namelookup}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n" "$DOMAIN"

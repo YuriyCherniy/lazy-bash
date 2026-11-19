@@ -1,0 +1,10 @@
+name: lazy-bash
+
+services:
+  ansible-runner:
+    build:
+      context: .
+    image: lazy-bash/ansible-runner:latest
+    volumes:
+      - ${HOME}/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - ./:/ansible
