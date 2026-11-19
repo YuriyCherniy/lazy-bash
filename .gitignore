@@ -1,0 +1,7 @@
+.venv
+.env
+.htpasswd
+__pycache__
+*.pyc
+*.retry
+vault.yml

@@ -1,0 +1,15 @@
+- name: Collect Django static files
+  hosts: app_servers
+  gather_facts: no
+
+  vars:
+    hosting_user: "{{ vault_hosting_user }}"
+    domain: "{{ vault_hosting_domain }}"
+    venv_path: /var/www/{{ hosting_user }}/data/.venv
+    app_path: /var/www/{{ hosting_user }}/data/www/{{ domain }}/lazy_bash
+
+  tasks:
+    - name: Run collectstatic with app venv python
+      ansible.builtin.command:
+        cmd: "{{ venv_path }}/bin/python {{ app_path }}/manage.py collectstatic --noinput --clear"
+        chdir: "{{ app_path }}"

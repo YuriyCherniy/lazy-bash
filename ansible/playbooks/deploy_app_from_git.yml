@@ -1,0 +1,33 @@
+- name: Deliver app code from git repository
+  hosts: app_servers
+  gather_facts: no
+
+  vars:
+    hosting_user: "{{ vault_hosting_user }}"
+    domain: "{{ vault_hosting_domain }}"
+    repo_url: "https://github.com/YuriyCherniy/lazy-bash.git"
+    repo_version: "main"
+    repo_path: "/var/www/{{ hosting_user }}/data/lazy_bash_repo"
+    app_path: "/var/www/{{ hosting_user }}/data/www/{{ domain }}/lazy_bash"
+    domain_root: "/var/www/{{ hosting_user }}/data/www/{{ domain }}"
+
+  tasks:
+    - name: Clone/update app repository
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_path }}"
+        version: "{{ repo_version }}"
+        force: yes
+        depth: 1
+        single_branch: yes
+
+    - name: Sync app/ contents into application directory
+      ansible.builtin.copy:
+        src: "{{ repo_path }}/app/"
+        dest: "{{ app_path }}/"
+        remote_src: yes
+
+    - name: Delete repo_path folder
+      ansible.builtin.file:
+        path: "{{ repo_path }}"
+        state: "absent"

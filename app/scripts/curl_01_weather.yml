@@ -1,0 +1,12 @@
+title: "Посмотреть погоду (demo без аргументов)"
+description: "Прогноз погоды в терминале через сервис wttr.in"
+args: ""
+version: 1.0.0
+author: "Yuriy Cherniy"
+tags: ""
+content: |
+  #!/bin/bash
+  set -euo pipefail
+  source common.sh
+
+  run curl "https://wttr.in"
